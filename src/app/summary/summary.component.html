@@ -1,0 +1,25 @@
+<div class="summary" *ngIf="!loading">
+    <p class="summary-header">Entradas e saidas</p>
+    <div class="summary-body">
+        <div class="include-checkbox">
+            <input type="checkbox" id="include-checkbox" checked (change)="hidePreviousBalance()">
+            <label for="include">Incluir saldo anterior</label>
+        </div>
+        <div [ngClass]="checked === true ? 'previous-balance':'hidden-previous-balance'">
+            <span>Saldo anterior</span>
+            <app-monetary-value [currency]="summary.currency" [value]="summary.previousBalance"></app-monetary-value>
+        </div> 
+        <div class="income">
+            <span>Entradas</span>
+            <app-monetary-value [currency]="summary.currency" [value]="summary.income"></app-monetary-value>
+        </div>
+        <div class="expenses">
+            <span>Saidas</span>
+            <app-monetary-value [currency]="summary.currency" [value]="summary.expenses"></app-monetary-value>
+        </div>
+        <hr>
+        <div class="total-balance">
+            <app-monetary-value [currency]="summary.currency" [value]="totalBalance"></app-monetary-value>
+        </div>
+    </div>
+</div>

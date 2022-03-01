@@ -1,18 +1,26 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { MonetaryValueComponent } from './monetary-value/monetary-value.component';
+import { SummaryComponent } from './summary/summary.component';
+import { FakeBackendInterceptor } from './interceptors/fake-backend';
+import { httpInterceptorProviders } from './interceptors/interceptors-provider';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    MonetaryValueComponent,
+    SummaryComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,0 +1,40 @@
+.summary {
+    width: 22em;
+    font-family: arial;
+}
+
+.summary-header {
+    background-color: #EFEEEE;
+    color: #605D5C;
+    font-weight: bold;
+    margin-bottom: 0.5em;
+}
+
+.summary-body {
+    color: #969594;
+}
+
+.include-checkbox {
+    color: black;
+    font-size: 0.75em;
+    font-family: arial;
+    margin-bottom: 0.5em;
+}
+
+.previous-balance, .income, .expenses{
+    display: flex;
+    justify-content: space-between; 
+    font-size: 1.1em;  
+    margin-bottom: 0.3em;
+}
+
+.total-balance {
+    text-align: right;
+    font-weight: bolder;
+    font-size: 1.7em;
+}
+
+.hidden-previous-balance {
+    display: none;
+}
+
