@@ -15,6 +15,7 @@ export class SummaryComponent implements OnInit{
   totalBalance: number
   showPreviousBalance: boolean = true
   showSummary: boolean = true
+  minimizeSummaryBtnText: string =  '-'
   loading: boolean = true
 
   constructor(private summaryService:SummaryService){}
@@ -45,11 +46,13 @@ export class SummaryComponent implements OnInit{
     this.showPreviousBalance = true
   }
 
-  hideSummary: () => void = function() {
-    if(this.showSummary) {
-      this.showSummary = false
+  hideSummary: () => void = () => {
+    if(this.minimizeSummaryBtnText === '-') {
+      this.minimizeSummaryBtnText = '+'
+      this.showSummary = !this.showSummary
       return
-    }
-    this.showSummary = true
+    } 
+    this.minimizeSummaryBtnText = '-'
+    this.showSummary = !this.showSummary
   }
 }

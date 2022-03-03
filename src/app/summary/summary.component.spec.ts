@@ -1,8 +1,5 @@
-import { isGeneratedFile } from '@angular/compiler/src/aot/util';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { Observable, of } from 'rxjs';
-import { MonetaryValueComponent } from '../monetary-value/monetary-value.component';
+import { of } from 'rxjs';
 import { dummySummary } from '../shared/test-utils/utils';
 import { SummaryService } from '../summary.service';
 
@@ -58,8 +55,7 @@ describe('SummaryComponent class unit test', () => {
 })
 
 
-
-describe('SummaryComponent', () => {
+describe('SummaryComponentTemplateIntegrationsTests', () => {
   let component: SummaryComponent
   let fixture: ComponentFixture<SummaryComponent>
   let componentElement: HTMLElement
@@ -137,7 +133,7 @@ describe('SummaryComponent', () => {
   }
 
   const retrieveMinifyBtnAndClickIt = () => {
-    const btn = getElementFromSelector<HTMLButtonElement>('.minify-summary')
+    const btn = getElementFromSelector<HTMLButtonElement>('.minify-summary-btn')
     clickElement(btn)
   }
 
@@ -159,6 +155,19 @@ describe('SummaryComponent', () => {
     expect(componentElements.expenses.textContent).toEqual('Saidas')
     expect(componentElements.income.textContent).toEqual('Entradas')
     expectValuePresentAndCorrect(componentElements.previousBalance, 'Saldo anterior')
+  })
+
+  it('whenMinimizeSummaryBtnClickedItsTextShouldChangeToAPlusSign', () => {
+    retrieveMinifyBtnAndClickIt()
+    const btn = getElementFromSelector<HTMLButtonElement>('.minify-summary-btn')
+    expect(btn.textContent).toEqual('+')
+  })
+
+  it('whenExpandSummaryBtnClickedItsTextShouldChangeBackToAMinusSign', () => {
+    retrieveMinifyBtnAndClickIt()
+    retrieveMinifyBtnAndClickIt()
+    const btn = getElementFromSelector<HTMLButtonElement>('.minify-summary-btn')
+    expect(btn.textContent).toEqual('-')
   })
 
 })
