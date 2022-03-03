@@ -1,11 +1,17 @@
 <div class="summary" *ngIf="!loading">
-    <p class="summary-header">Entradas e saidas</p>
-    <div class="summary-body">
+    <div class="summary-header">
+        <p>Entradas e saidas</p>
+        <div class="summary-utility-btns">
+            <button type="menu" class="minify-summary" (click)="hideSummary()">-</button>
+            <button type="menu" class="summary-question-mark">?</button>
+        </div>
+    </div>
+    <div [ngClass]="showSummary === true ? 'summary-body':'summary-body-hidden'">
         <div class="include-checkbox">
             <input type="checkbox" id="include-checkbox" checked (change)="hidePreviousBalance()">
             <label for="include">Incluir saldo anterior</label>
         </div>
-        <div [ngClass]="checked === true ? 'previous-balance':'hidden-previous-balance'">
+        <div [ngClass]="showPreviousBalance === true ? 'previous-balance':'hidden-previous-balance'">
             <span>Saldo anterior</span>
             <app-monetary-value [currency]="summary.currency" [value]="summary.previousBalance"></app-monetary-value>
         </div> 

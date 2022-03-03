@@ -13,7 +13,8 @@ export class SummaryComponent implements OnInit{
   userId: number
   summary: Summary
   totalBalance: number
-  checked: boolean = true
+  showPreviousBalance: boolean = true
+  showSummary: boolean = true
   loading: boolean = true
 
   constructor(private summaryService:SummaryService){}
@@ -35,14 +36,20 @@ export class SummaryComponent implements OnInit{
   }
 
   hidePreviousBalance: () => void = function() {
-    if(this.checked) {
-      this.checked = false
+    if(this.showPreviousBalance) {
+      this.showPreviousBalance = false
       this.minifiedTotalBalance()
       return
     }
     this.expandedTotalBalance()
-    this.checked = true
+    this.showPreviousBalance = true
   }
 
-  
+  hideSummary: () => void = function() {
+    if(this.showSummary) {
+      this.showSummary = false
+      return
+    }
+    this.showSummary = true
+  }
 }

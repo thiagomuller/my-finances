@@ -8,10 +8,22 @@
     color: #605D5C;
     font-weight: bold;
     margin-bottom: 0.5em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 1.50rem;
+}
+
+.summary-utility-btns button{
+    font-size: 0.60em;
 }
 
 .summary-body {
     color: #969594;
+}
+
+.summary-body-hidden {
+    display: none;
 }
 
 .include-checkbox {

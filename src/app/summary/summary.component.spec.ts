@@ -46,13 +46,13 @@ describe('SummaryComponent class unit test', () => {
 
   it('WhenCalledToHidePreviousBalanceShouldChangeCheckedToTrue', () => {
     component.hidePreviousBalance()
-    expect(component.checked).toBeFalse()
+    expect(component.showPreviousBalance).toBeFalse()
   })
 
   it('WhenCalledToHidePreviousBalanceByItsAlreadyHiddenShouldChangeCheckBackToTrue', () => {
     component.hidePreviousBalance()
     component.hidePreviousBalance()
-    expect(component.checked).toBeTrue()
+    expect(component.showPreviousBalance).toBeTrue()
   })
 
 })
@@ -63,11 +63,6 @@ describe('SummaryComponent', () => {
   let component: SummaryComponent
   let fixture: ComponentFixture<SummaryComponent>
   let componentElement: HTMLElement
-  let checkbox: HTMLInputElement
-  let previousBalanceElement: HTMLDivElement
-  let income: HTMLDivElement
-  let expenses: HTMLDivElement
-  let totalBalance: HTMLDivElement
 
   beforeEach(async () => {
 
@@ -86,8 +81,31 @@ describe('SummaryComponent', () => {
     
   })
 
-  const getDivElementFromClass = (clazz: string): HTMLDivElement => {
-    return componentElement.querySelector(clazz) as HTMLDivElement
+  function getElementFromSelector<T extends HTMLElement>(selector: string): T {
+    return componentElement.querySelector(selector) as T
+  }
+
+  type ComponentHTMLElements = {
+    income: HTMLDivElement,
+    expenses: HTMLDivElement,
+    totalBalance: HTMLDivElement,
+    previousBalance?: HTMLDivElement,
+    checkbox?: HTMLInputElement
+  }
+
+  const getComponentHTMLElements: () => ComponentHTMLElements = () => {
+    return {
+      income: getElementFromSelector<HTMLDivElement>('.income'),
+      expenses: getElementFromSelector<HTMLDivElement>('.expenses'),
+      totalBalance: getElementFromSelector<HTMLDivElement>('.total-balance'),
+      previousBalance: getElementFromSelector<HTMLDivElement>('.previous-balance'),
+      checkbox: getElementFromSelector<HTMLInputElement>('#include-checkbox')
+    }
+  }
+
+  function clickElement<T extends HTMLElement>(element: T): void {
+    element.click()
+    fixture.detectChanges()
   }
 
   it('should create', () => {
@@ -95,27 +113,52 @@ describe('SummaryComponent', () => {
   })
 
   it('GivenDummarySummaryShouldRenderAllDivsCorrectly', () => {
-    income = getDivElementFromClass('.income')
-    expenses = getDivElementFromClass('.expenses')
-    totalBalance = getDivElementFromClass('.total-balance')
-    expect(income).toBeTruthy()
-    expect(expenses).toBeTruthy()
-    expect(totalBalance).toBeTruthy()
+    let monetaryValues = getComponentHTMLElements()
+    expect(monetaryValues.income).toBeTruthy()
+    expect(monetaryValues.expenses).toBeTruthy()
+    expect(monetaryValues.totalBalance).toBeTruthy()
   })
 
   it('GivenDummySummaryShouldRenderValuesCorrectlyIncludingPreviousBalance', () => {
-    checkbox = componentElement.querySelector('#include-checkbox') as HTMLInputElement
-    previousBalanceElement = getDivElementFromClass('.previous-balance')
-    expect(previousBalanceElement).toBeTruthy()
-    expect(checkbox.checked).toBeTruthy()
+    const componentElements = getComponentHTMLElements()
+    expect(componentElements.previousBalance).toBeTruthy()
+    expect(componentElements.checkbox.checked).toBeTruthy()
   })
 
   it('IfHidePreviousBalanceCheckboxClickedThenPreviousBalanceShouldBeHidden', () => {
-    checkbox = componentElement.querySelector('#include-checkbox') as HTMLInputElement
-    checkbox.click()
-    fixture.detectChanges()
-    previousBalanceElement = getDivElementFromClass('.previous-balance')
-    expect(previousBalanceElement).toBeFalsy()
+    const componentElements = getComponentHTMLElements()
+    clickElement(componentElements.checkbox)
+    expect(getElementFromSelector<HTMLDivElement>('.previous-balance')).toBeFalsy()
+  })
+
+  const expectValuePresentAndCorrect: (element: HTMLDivElement, expectedValue: string) => void = (element, expectedValue) => {
+    expect(element).toBeTruthy()
+    expect(element.textContent).toEqual(expectedValue)
+  }
+
+  const retrieveMinifyBtnAndClickIt = () => {
+    const btn = getElementFromSelector<HTMLButtonElement>('.minify-summary')
+    clickElement(btn)
+  }
+
+  it('IfMinifySummaryBtnIsClickedThenShouldMinifyItMaintainingSameState', () => {
+    const componentElements = getComponentHTMLElements()
+    expectValuePresentAndCorrect(componentElements.expenses, 'Saidas')
+    expectValuePresentAndCorrect(componentElements.income, 'Entradas')
+    expectValuePresentAndCorrect(componentElements.previousBalance, 'Saldo anterior')
+    retrieveMinifyBtnAndClickIt()
+    expect(getElementFromSelector<HTMLDivElement>('summary-body')).toBeFalsy()
+  })
+
+  it('IfSummaryMinifiedThenMinifyBtnIsClickedAgainShouldRenderComponentBack', () => {
+    retrieveMinifyBtnAndClickIt()
+    retrieveMinifyBtnAndClickIt()
+    const componentElements = getComponentHTMLElements()
+    expect(getElementFromSelector<HTMLDivElement>('.summary-body')).toBeTruthy()
+    expect(componentElements.checkbox.checked).toBeTruthy()
+    expect(componentElements.expenses.textContent).toEqual('Saidas')
+    expect(componentElements.income.textContent).toEqual('Entradas')
+    expectValuePresentAndCorrect(componentElements.previousBalance, 'Saldo anterior')
   })
 
 })
