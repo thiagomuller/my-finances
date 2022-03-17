@@ -3,7 +3,7 @@
         <p>Entradas e saidas</p>
         <div class="summary-utility-btns">
             <button type="menu" class="minify-summary-btn" (click)="hideSummary()">{{minimizeSummaryBtnText}}</button>
-            <button type="menu" class="summary-question-mark">?</button>
+            <button type="menu" class="summary-question-mark" (click)="togleModal()">?</button>
         </div>
     </div>
     <div [ngClass]="showSummary === true ? 'summary-body':'summary-body-hidden'">
@@ -27,5 +27,21 @@
         <div class="total-balance">
             <app-monetary-value [currency]="summary.currency" [value]="totalBalance"></app-monetary-value>
         </div>
+        <app-modal [(showModal)]="showModal">
+            <modal-title>
+                <h2>Dica de uso</h2>
+            </modal-title>
+            <modal-body>
+                <p>
+                    O "Resultado" é a diferença entre as "Entradas" e "Saídas" de todas as contas no mês/ano selecionado.
+                </p>
+                <p>
+                    É possível visualizar o "Resultado" de contas específicas clicando no "check-box" que aparece do lado esquerdo das contas.
+                </p>
+                <p>
+                    Ao selecionar uma ou mais contas (check-box), as transferências entres as contas selecionadas serão consideradas.
+                </p>
+            </modal-body>
+        </app-modal>
     </div>
 </div>

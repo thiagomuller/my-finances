@@ -3,7 +3,7 @@ import {
   HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpResponse, HttpClient
 } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { dummySummary } from '../shared/test-utils/utils';
+import { dummySummary } from '../shared/fixtures/dummy';
 
 
 @Injectable()
@@ -21,7 +21,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
   handleRequests(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const { urlWithParams, method } = req
     if (urlWithParams.includes('/getUserSummary/?userId') && method === 'GET') {
-      console.log('INTERCEPTED')
       return of(new HttpResponse({ status: 200, body: dummySummary })).pipe()
     }
   }

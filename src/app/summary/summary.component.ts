@@ -17,6 +17,7 @@ export class SummaryComponent implements OnInit{
   showSummary: boolean = true
   minimizeSummaryBtnText: string =  '-'
   loading: boolean = true
+  showModal: boolean = false
 
   constructor(private summaryService:SummaryService){}
 
@@ -54,5 +55,9 @@ export class SummaryComponent implements OnInit{
     } 
     this.minimizeSummaryBtnText = '-'
     this.showSummary = !this.showSummary
+  }
+
+  togleModal: () => void = () => {
+    this.showModal = !this.showModal
   }
 }

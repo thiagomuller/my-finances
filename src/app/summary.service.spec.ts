@@ -4,7 +4,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { Summary } from './shared/model/summary';
 
 import { SummaryService } from './summary.service';
-import { dummySummary } from './shared/test-utils/utils';
+import { dummySummary } from './shared/fixtures/dummy';
 
 
 

@@ -8,12 +8,14 @@ import { MonetaryValueComponent } from './monetary-value/monetary-value.componen
 import { SummaryComponent } from './summary/summary.component';
 import { FakeBackendInterceptor } from './interceptors/fake-backend';
 import { httpInterceptorProviders } from './interceptors/interceptors-provider';
+import { ModalComponent } from './modal/modal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MonetaryValueComponent,
-    SummaryComponent
+    SummaryComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,

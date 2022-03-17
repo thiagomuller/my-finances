@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { dummySummary } from '../shared/test-utils/utils';
+import { dummySummary } from '../shared/fixtures/dummy';
 import { SummaryService } from '../summary.service';
 
 import { SummaryComponent } from './summary.component';
 
 
-describe('SummaryComponent class unit test', () => {
+describe('summary component class unit test', () => {
   let component: SummaryComponent
   let summaryServiceSpy: jasmine.SpyObj<SummaryService>
 
@@ -26,27 +26,27 @@ describe('SummaryComponent class unit test', () => {
     component.ngOnInit()
   })
 
-  it('GivenValidReturnFromServiceShouldInitializeCorrectly', () => {
+  it('given valid return from service should initialize correctly', () => {
     expect(component.summary).toEqual(dummySummary)
     expect(component.loading).toBeFalse
   })
 
-  it('GivenSummaryInitializedShouldCalculateCorrectMinifiedTotalBalance', () => {
+  it('given summary initialized should calculate correct minified total balance', () => {
     component.minifiedTotalBalance()
     expect(component.totalBalance).toEqual(940)
   })
 
-  it('GivenSummaryInitializedShouldCalculateCorrectExpandedTotalBalance', () => {
+  it('given summary initialized should calculate correct expanded total balance', () => {
     component.expandedTotalBalance()
     expect(component.totalBalance).toEqual(1460)
   })
 
-  it('WhenCalledToHidePreviousBalanceShouldChangeCheckedToTrue', () => {
+  it('when called to hide previous balance should change checked to true', () => {
     component.hidePreviousBalance()
     expect(component.showPreviousBalance).toBeFalse()
   })
 
-  it('WhenCalledToHidePreviousBalanceByItsAlreadyHiddenShouldChangeCheckBackToTrue', () => {
+  it('when called to hide previous balance by its already hidden should change check back to true', () => {
     component.hidePreviousBalance()
     component.hidePreviousBalance()
     expect(component.showPreviousBalance).toBeTrue()
@@ -55,7 +55,7 @@ describe('SummaryComponent class unit test', () => {
 })
 
 
-describe('SummaryComponentTemplateIntegrationsTests', () => {
+describe('summary component template integrations tests', () => {
   let component: SummaryComponent
   let fixture: ComponentFixture<SummaryComponent>
   let componentElement: HTMLElement
@@ -108,20 +108,20 @@ describe('SummaryComponentTemplateIntegrationsTests', () => {
     expect(component).toBeTruthy()
   })
 
-  it('GivenDummarySummaryShouldRenderAllDivsCorrectly', () => {
+  it('given dummy summary should render all divs correctly', () => {
     let monetaryValues = getComponentHTMLElements()
     expect(monetaryValues.income).toBeTruthy()
     expect(monetaryValues.expenses).toBeTruthy()
     expect(monetaryValues.totalBalance).toBeTruthy()
   })
 
-  it('GivenDummySummaryShouldRenderValuesCorrectlyIncludingPreviousBalance', () => {
+  it('given dummy summary should render values correctly icluding previous balance', () => {
     const componentElements = getComponentHTMLElements()
     expect(componentElements.previousBalance).toBeTruthy()
     expect(componentElements.checkbox.checked).toBeTruthy()
   })
 
-  it('IfHidePreviousBalanceCheckboxClickedThenPreviousBalanceShouldBeHidden', () => {
+  it('if hide previous balance checkbox clicked then previous balance should be hidden', () => {
     const componentElements = getComponentHTMLElements()
     clickElement(componentElements.checkbox)
     expect(getElementFromSelector<HTMLDivElement>('.previous-balance')).toBeFalsy()
@@ -137,7 +137,7 @@ describe('SummaryComponentTemplateIntegrationsTests', () => {
     clickElement(btn)
   }
 
-  it('IfMinifySummaryBtnIsClickedThenShouldMinifyItMaintainingSameState', () => {
+  it('if minify summary btn is clicked then should minify it maintaining same state', () => {
     const componentElements = getComponentHTMLElements()
     expectValuePresentAndCorrect(componentElements.expenses, 'Saidas')
     expectValuePresentAndCorrect(componentElements.income, 'Entradas')
@@ -146,7 +146,7 @@ describe('SummaryComponentTemplateIntegrationsTests', () => {
     expect(getElementFromSelector<HTMLDivElement>('summary-body')).toBeFalsy()
   })
 
-  it('IfSummaryMinifiedThenMinifyBtnIsClickedAgainShouldRenderComponentBack', () => {
+  it('if summary minified then minify btn is clicked again should render component back', () => {
     retrieveMinifyBtnAndClickIt()
     retrieveMinifyBtnAndClickIt()
     const componentElements = getComponentHTMLElements()
@@ -157,13 +157,13 @@ describe('SummaryComponentTemplateIntegrationsTests', () => {
     expectValuePresentAndCorrect(componentElements.previousBalance, 'Saldo anterior')
   })
 
-  it('whenMinimizeSummaryBtnClickedItsTextShouldChangeToAPlusSign', () => {
+  it('when minimize summary btn clicked its text should change to a plus sign', () => {
     retrieveMinifyBtnAndClickIt()
     const btn = getElementFromSelector<HTMLButtonElement>('.minify-summary-btn')
     expect(btn.textContent).toEqual('+')
   })
 
-  it('whenExpandSummaryBtnClickedItsTextShouldChangeBackToAMinusSign', () => {
+  it('when expand summary btn clicked its text should change back to a minus sign', () => {
     retrieveMinifyBtnAndClickIt()
     retrieveMinifyBtnAndClickIt()
     const btn = getElementFromSelector<HTMLButtonElement>('.minify-summary-btn')

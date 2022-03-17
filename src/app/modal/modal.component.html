@@ -1,0 +1,7 @@
+<div class="modal" *ngIf="showModal">
+    <div class="modal-content">
+        <button type="button" class="close" (click)="toggleModal()">&times;</button>
+        <ng-content select="modal-title"></ng-content>
+        <ng-content select="modal-body"></ng-content>
+    </div> 
+</div>

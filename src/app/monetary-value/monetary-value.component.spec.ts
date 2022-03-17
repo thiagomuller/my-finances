@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MonetaryValueComponent } from './monetary-value.component';
 
-describe('MonetaryValueComponent', () => {
+describe('monetary value component', () => {
   let component: MonetaryValueComponent;
   let fixture: ComponentFixture<MonetaryValueComponent>;
   let componentElement: HTMLElement
@@ -25,14 +25,14 @@ describe('MonetaryValueComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('GivenRealShouldRenderIt', () => {
+  it('given real should render it', () => {
     component.currency = 'R$'
     component.value = 1400
     fixture.detectChanges();
     expect(componentElement.textContent).toEqual('R$ 1400')
   })
 
-  it('GivenDollarShouldRenderIt', () => {
+  it('given dollar should render it', () => {
     component.currency = '$'
     component.value = 1400
     fixture.detectChanges();
