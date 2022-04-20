@@ -1,0 +1,47 @@
+<div class="summary" *ngIf="!loading">
+    <div class="summary-header">
+        <p>Entradas e saidas</p>
+        <div class="summary-utility-btns">
+            <button type="menu" class="minify-summary-btn" (click)="hideSummary()">{{minimizeSummaryBtnText}}</button>
+            <button type="menu" class="summary-question-mark" (click)="togleModal()">?</button>
+        </div>
+    </div>
+    <div [ngClass]="showSummary === true ? 'summary-body':'summary-body-hidden'">
+        <div class="include-checkbox">
+            <input type="checkbox" id="include-checkbox" checked (change)="hidePreviousBalance()">
+            <label for="include">Incluir saldo anterior</label>
+        </div>
+        <div [ngClass]="showPreviousBalance === true ? 'previous-balance':'hidden-previous-balance'">
+            <span>Saldo anterior</span>
+            <app-monetary-value [currency]="summary.currency" [value]="summary.previousBalance"></app-monetary-value>
+        </div> 
+        <div class="income">
+            <span>Entradas</span>
+            <app-monetary-value [currency]="summary.currency" [value]="summary.income"></app-monetary-value>
+        </div>
+        <div class="expenses">
+            <span>Saidas</span>
+            <app-monetary-value [currency]="summary.currency" [value]="summary.expenses"></app-monetary-value>
+        </div>
+        <hr>
+        <div class="total-balance">
+            <app-monetary-value [currency]="summary.currency" [value]="totalBalance"></app-monetary-value>
+        </div>
+        <app-modal [(showModal)]="showModal">
+            <modal-title>
+                <h2>Dica de uso</h2>
+            </modal-title>
+            <modal-body>
+                <p>
+                    O "Resultado" é a diferença entre as "Entradas" e "Saídas" de todas as contas no mês/ano selecionado.
+                </p>
+                <p>
+                    É possível visualizar o "Resultado" de contas específicas clicando no "check-box" que aparece do lado esquerdo das contas.
+                </p>
+                <p>
+                    Ao selecionar uma ou mais contas (check-box), as transferências entres as contas selecionadas serão consideradas.
+                </p>
+            </modal-body>
+        </app-modal>
+    </div>
+</div>
