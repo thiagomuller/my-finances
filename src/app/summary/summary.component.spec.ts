@@ -1,29 +1,33 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { dummySummary } from '../shared/fixtures/dummy';
 import { SummaryService } from '../summary.service';
+import { Spectator, createComponentFactory, mockProvider } from '@ngneat/spectator'
+import { MockComponents } from 'ng-mocks';
 
 import { SummaryComponent } from './summary.component';
-
+import { MonetaryValueComponent } from '../monetary-value/monetary-value.component';
+import { ModalComponent } from '../modal/modal.component';
 
 describe('summary component class unit test', () => {
+  let spectator: Spectator<SummaryComponent>
   let component: SummaryComponent
-  let summaryServiceSpy: jasmine.SpyObj<SummaryService>
-
+  const createComponent = createComponentFactory({
+    component: SummaryComponent,
+    shallow: true,
+    declarations: [
+      MockComponents(MonetaryValueComponent, ModalComponent)
+    ],
+    detectChanges: false,
+    providers: [mockProvider(SummaryService)]
+  })
 
   beforeEach(() => {
-    const spy = jasmine.createSpyObj('SummaryService', ['getSummaryForGivenUser'])
-
-    TestBed.configureTestingModule({
-      providers: [
-        SummaryComponent,
-        { provide: SummaryService, useValue: spy }
-      ]
-    })
-    component = TestBed.inject(SummaryComponent)
-    summaryServiceSpy = TestBed.inject(SummaryService) as jasmine.SpyObj<SummaryService>
-    summaryServiceSpy.getSummaryForGivenUser.and.returnValue(of(dummySummary))
-    component.ngOnInit()
+    
+    spectator = createComponent()
+    spectator.inject(SummaryService).getSummaryForGivenUser.and.returnValue(of(dummySummary))
+    spectator.detectChanges()
+    component = spectator.component
   })
 
   it('given valid return from service should initialize correctly', () => {
@@ -54,31 +58,32 @@ describe('summary component class unit test', () => {
 
 })
 
-
-describe('summary component template integrations tests', () => {
-  let component: SummaryComponent
-  let fixture: ComponentFixture<SummaryComponent>
-  let componentElement: HTMLElement
-
-  beforeEach(async () => {
-
-    const summaryServiceSpy = jasmine.createSpyObj<SummaryService>('SummaryService', ['getSummaryForGivenUser'])
-    summaryServiceSpy.getSummaryForGivenUser.and.returnValue(of(dummySummary))
-    
-    await TestBed.configureTestingModule({
-      declarations: [ SummaryComponent],
-      providers: [{provide: SummaryService, useValue: summaryServiceSpy}]
-    }).compileComponents()
-    
-    fixture = TestBed.createComponent(SummaryComponent)
-    component = fixture.componentInstance
-    componentElement = fixture.nativeElement
-    fixture.detectChanges()
-    
+describe('summary component DOM integration testing', () => {
+  let spectator: Spectator<SummaryComponent>
+  const createComponent = createComponentFactory({
+    component: SummaryComponent,
+    shallow: true,
+    declarations: [
+      MockComponents(MonetaryValueComponent, ModalComponent)
+    ],
+    detectChanges: false,
+    providers: [mockProvider(SummaryService)]
   })
 
+  beforeEach(() => {
+    
+    spectator = createComponent()
+    spectator.inject(SummaryService).getSummaryForGivenUser.and.returnValue(of(dummySummary))
+    spectator.detectChanges()
+  })
+
+  function clickElement<T extends HTMLElement>(element: T): void {
+    element.click()
+    spectator.detectChanges()
+  }
+
   function getElementFromSelector<T extends HTMLElement>(selector: string): T {
-    return componentElement.querySelector(selector) as T
+    return spectator.query(selector) as T
   }
 
   type ComponentHTMLElements = {
@@ -99,13 +104,8 @@ describe('summary component template integrations tests', () => {
     }
   }
 
-  function clickElement<T extends HTMLElement>(element: T): void {
-    element.click()
-    fixture.detectChanges()
-  }
-
   it('should create', () => {
-    expect(component).toBeTruthy()
+    expect(spectator.element).toBeTruthy()
   })
 
   it('given dummy summary should render all divs correctly', () => {
@@ -169,5 +169,5 @@ describe('summary component template integrations tests', () => {
     const btn = getElementFromSelector<HTMLButtonElement>('.minify-summary-btn')
     expect(btn.textContent).toEqual('-')
   })
-
+  
 })
